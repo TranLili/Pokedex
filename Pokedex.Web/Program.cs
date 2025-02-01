@@ -1,5 +1,4 @@
-using Pokedex.Contract.Response;
-using Pokedex.Web;
+using Pokedex.Web.Clients;
 using Pokedex.Web.Components;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -13,9 +12,9 @@ builder.Services.AddRazorComponents()
 
 builder.Services.AddOutputCache();
 
-builder.Services.AddHttpClient<PokemonResponse>(client =>
+builder.Services.AddHttpClient<PokedexAPIClient>(client =>
 {
-    client.BaseAddress = new("https+http://apiservice");
+    client.BaseAddress = new("https+http://api");
 });
 
 var app = builder.Build();
