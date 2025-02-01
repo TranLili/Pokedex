@@ -1,7 +1,49 @@
 ﻿@page "/"
+@using Pokedex.Contract.Response
+@using Pokedex.Web.Clients
+@rendermode InteractiveServer
+@inject PokedexAPIClient pokedexAPI
 
-<PageTitle>Home</PageTitle>
+<PageTitle>Search Pokemon</PageTitle>
 
-<h1>Hello, world!</h1>
+<input @bind="input" placeholder="Input" />
+<button @onclick="ButtonPress">Test</button>
 
-Welcome to your new app.
+@if (pokemon is not null)
+{
+	<div>
+		<h1>@pokemon.Name</h1>
+		<h3>@pokemon.Id</h3>
+		<img src="@pokemon.Image" />
+	</div>
+}
+else if (errorMessage is not null)
+{
+	<h1>@errorMessage</h1>
+}
+
+
+@code {
+	private string? input;
+	private PokemonResponse? pokemon;
+	private string? errorMessage;
+
+	public async Task ButtonPress()
+	{
+		errorMessage = null;
+		if (!string.IsNullOrEmpty(input))
+		{
+			try
+			{
+				pokemon = await pokedexAPI.GetPokemonAsync(input);
+
+				if (pokemon is null)
+					errorMessage = "No pokémon :(";
+			}
+			catch (Exception ex)
+			{
+				errorMessage = ex.Message;
+			}
+		}
+	}
+}
