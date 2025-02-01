@@ -1,6 +1,6 @@
 # Pokedex
-Simple frontend and api acting as a reverse proxy for PokeAPI.
-Displays Pokémon detals: Name, ID, Image.
+Simple frontend and api acting as a reverse proxy for PokeAPI. \
+Displays Pokémon details: Name, ID, Image.
 
 ## Features
 * Search Pokemon
