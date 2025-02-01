@@ -6,8 +6,8 @@
 
 <PageTitle>Search Pokemon</PageTitle>
 
-<input @bind="input" placeholder="Input" />
-<button @onclick="ButtonPress">Test</button>
+<input @bind="input" placeholder="Input" @onkeydown="EnterKeyPress" @bind:event="oninput" />
+<button @onclick="SearchPokemon">Test</button>
 
 @if (pokemon is not null)
 {
@@ -28,7 +28,7 @@ else if (errorMessage is not null)
 	private PokemonResponse? pokemon;
 	private string? errorMessage;
 
-	public async Task ButtonPress()
+	private async Task SearchPokemon()
 	{
 		errorMessage = null;
 		if (!string.IsNullOrEmpty(input))
@@ -44,6 +44,14 @@ else if (errorMessage is not null)
 			{
 				errorMessage = ex.Message;
 			}
+		}
+	}
+
+	private async Task EnterKeyPress(KeyboardEventArgs e)
+	{
+		if (e.Key is "Enter")
+		{
+			await SearchPokemon();
 		}
 	}
 }
