@@ -1,8 +1,5 @@
-using Microsoft.AspNetCore.Http.HttpResults;
-using Microsoft.AspNetCore.Http;
 using Pokedex.ApiService.Services;
 using Pokedex.Contract.Response;
-using Microsoft.AspNetCore.Mvc;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,6 +16,7 @@ builder.Services.AddOpenApi();
 builder.Services.AddTransient<PokeAPIService>();
 builder.Services.AddMemoryCache();
 builder.Services.AddHttpClient();
+builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
@@ -27,51 +25,27 @@ app.UseExceptionHandler();
 
 if (app.Environment.IsDevelopment())
 {
-    app.MapOpenApi();
+    app.UseSwagger();
+    app.UseSwaggerUI();
 }
 
-string[] summaries = ["Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"];
-
-app.MapGet("/weatherforecast", () =>
+app.MapGet("/pokemon/{input}", async (PokeAPIService pokeAPIService, string input) =>
 {
-    var forecast = Enumerable.Range(1, 5).Select(index =>
-        new WeatherForecast
-        (
-            DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-            Random.Shared.Next(-20, 55),
-            summaries[Random.Shared.Next(summaries.Length)]
-        ))
-        .ToArray();
-    return forecast;
+    var pokemon = await pokeAPIService.GetPokemon(input);
+    return pokemon is not null
+        ? Results.Ok(pokemon)
+        : Results.NotFound();
 })
-.WithName("GetWeatherForecast");
-
-
-//app.MapGet("/pokemon/{input}", Results<Ok<PokemonResponse>, NotFound> (PokeAPIService pokeAPIService , string input) =>
-//        pokeAPIService.GetPokemon(input) is { } pokemon
-//            ? TypedResults.Ok(pokemon)
-//            : TypedResults.NotFound()
-//    )
-//    .WithName("GetPokemonByInput"));
-
-//app.MapGet("/pokemon/{input}", async (PokeAPIService pokeAPIService, string input) =>
-//{
-//    var pokemon = await pokeAPIService.GetPokemon(input);
-//    return pokemon is not null
-//        ? TypedResults.Ok(pokemon)
-//        : TypedResults.NotFound();
-//})
-//.WithName("GetPokemon");
-
-
-
+.WithName("GetPokemon")
+.WithSummary("Proxy to PokeAPI")
+.WithDescription("Provides Pokémon details, including ID, name, and image, based on the input provided.")
+.Produces<PokemonResponse>(StatusCodes.Status200OK)
+.Produces(StatusCodes.Status404NotFound);
 
 
 app.MapDefaultEndpoints();
 
 app.Run();
 
-record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
-{
-    public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
-}
+// Make the implicit Program class public so test projects can access it
+public partial class Program { }
