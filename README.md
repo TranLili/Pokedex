@@ -2,6 +2,15 @@
 Simple frontend and api acting as a reverse proxy for PokeAPI. \
 Displays Pokémon details: Name, ID, Image.
 
+## Image of the .NET Aspire portal when running the application
+![image](https://github.com/user-attachments/assets/48b0e957-db1f-4b55-be00-bea8dfb6779e)
+
+## The Api Swagger portal
+![image](https://github.com/user-attachments/assets/fc42cca1-6305-4f1b-a477-1f12343128d8)
+
+## Blazor Frontend 
+![image](https://github.com/user-attachments/assets/4e20b1a0-8b0c-4b1f-8cdd-540609015434)
+
 ## Features
 * Search Pokemon
   - Search by Pokémon name
@@ -49,7 +58,7 @@ dotnet build --configuration Release
 dotnet run --project Pokedex
 ```
 
-## Running Tests
+### Running Tests
 ```
 # Navigate to the test project directory
 cd Pokedex.ApiService.Tests
