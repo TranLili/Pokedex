@@ -1,3 +1,9 @@
+using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.AspNetCore.Http;
+using Pokedex.ApiService.Services;
+using Pokedex.Contract.Response;
+using Microsoft.AspNetCore.Mvc;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add service defaults & Aspire client integrations.
@@ -8,6 +14,11 @@ builder.Services.AddProblemDetails();
 
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
+
+// Add required services for the PokeAPI
+builder.Services.AddTransient<PokeAPIService>();
+builder.Services.AddMemoryCache();
+builder.Services.AddHttpClient();
 
 var app = builder.Build();
 
@@ -34,6 +45,27 @@ app.MapGet("/weatherforecast", () =>
     return forecast;
 })
 .WithName("GetWeatherForecast");
+
+
+//app.MapGet("/pokemon/{input}", Results<Ok<PokemonResponse>, NotFound> (PokeAPIService pokeAPIService , string input) =>
+//        pokeAPIService.GetPokemon(input) is { } pokemon
+//            ? TypedResults.Ok(pokemon)
+//            : TypedResults.NotFound()
+//    )
+//    .WithName("GetPokemonByInput"));
+
+//app.MapGet("/pokemon/{input}", async (PokeAPIService pokeAPIService, string input) =>
+//{
+//    var pokemon = await pokeAPIService.GetPokemon(input);
+//    return pokemon is not null
+//        ? TypedResults.Ok(pokemon)
+//        : TypedResults.NotFound();
+//})
+//.WithName("GetPokemon");
+
+
+
+
 
 app.MapDefaultEndpoints();
 

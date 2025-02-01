@@ -7,6 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Pokedex.Contract\Pokedex.Contract.csproj" />
     <ProjectReference Include="..\Pokedex.ServiceDefaults\Pokedex.ServiceDefaults.csproj" />
   </ItemGroup>
 
