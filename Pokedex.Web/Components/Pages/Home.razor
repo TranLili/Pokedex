@@ -4,17 +4,23 @@
 @rendermode InteractiveServer
 @inject PokedexAPIClient pokedexAPI
 
-<PageTitle>Search Pokemon</PageTitle>
+<PageTitle>Pokedex: Search Pokemon</PageTitle>
 
-<input @bind="input" placeholder="Input" @onkeydown="EnterKeyPress" @bind:event="oninput" />
-<button @onclick="SearchPokemon">Test</button>
+<header class="header">
+	<h1>Pokedex</h1>
+</header>
+
+<div class="search-container">
+	<input class="search-bar" @bind="input" @bind:event="oninput" @onkeydown="EnterKeyPress" placeholder="Input" />
+	<button class="search-button" @onclick="SearchPokemon">Search</button>
+</div>
 
 @if (pokemon is not null)
 {
-	<div>
-		<h1>@pokemon.Name</h1>
+	<div class="pokemon-info">
+		<h1>@pokemon.Name.ToUpper()</h1>
 		<h3>@pokemon.Id</h3>
-		<img src="@pokemon.Image" />
+		<img class="pokemon-image" src="@pokemon.Image" />
 	</div>
 }
 else if (errorMessage is not null)
