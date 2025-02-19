@@ -30,7 +30,7 @@ public class PokeAPIService
                 return null;
 
             if (!response.IsSuccessStatusCode)
-                throw new HttpRequestException($"Failed request: {response.StatusCode.ToString()}");
+                throw new HttpRequestException($"Failed request: {response.StatusCode}");
             
             var pokemon = await response.Content.ReadFromJsonAsync<Pokemon>();
             if (pokemon is null)
