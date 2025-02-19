@@ -9,7 +9,8 @@ Displays Pokémon details: Name, ID, Image.
 ![image](https://github.com/user-attachments/assets/fc42cca1-6305-4f1b-a477-1f12343128d8)
 
 ## Blazor Frontend 
-![image](https://github.com/user-attachments/assets/4e20b1a0-8b0c-4b1f-8cdd-540609015434)
+![image](https://github.com/user-attachments/assets/6741d11c-9aca-4203-94b4-fb9dcffbbd17)
+
 
 ## Features
 * Search Pokemon
