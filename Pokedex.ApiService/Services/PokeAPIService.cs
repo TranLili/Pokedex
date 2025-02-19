@@ -29,26 +29,22 @@ public class PokeAPIService
             if (response.StatusCode is HttpStatusCode.NotFound)
                 return null;
 
-            if (response.IsSuccessStatusCode)
-            {
-                var pokemon = await response.Content.ReadFromJsonAsync<Pokemon>();
-                if (pokemon is null)
-                    return null;
+            if (!response.IsSuccessStatusCode)
+                throw new HttpRequestException($"Failed request: {response.StatusCode.ToString()}");
+            
+            var pokemon = await response.Content.ReadFromJsonAsync<Pokemon>();
+            if (pokemon is null)
+                return null;
 
-                PokemonResponse pokemonResponse = new()
-                {
-                    Id = pokemon.Id,
-                    Name = pokemon.Name,
-                    Image = pokemon.Sprites.Front_Default
-                };
-                _memoryCache.Set(input, pokemonResponse, _duration);
-
-                return pokemonResponse;
-            }
-            else
+            PokemonResponse pokemonResponse = new()
             {
-                throw new Exception($"Error {response.StatusCode}");
-            }
+                Id = pokemon.Id,
+                Name = pokemon.Name,
+                Image = pokemon.Sprites.Front_Default
+            };
+            _memoryCache.Set(input, pokemonResponse, _duration);
+
+            return pokemonResponse;
         }
         catch (HttpRequestException ex)
         {
